@@ -5,10 +5,11 @@ class ListsController < ApplicationController
   end
 
   def index
-    @lists = List.all || []
+    @lists = List.all
   end
 
   def show
+    @list = List.find(params[:id])
   end
 
   def edit
@@ -18,9 +19,12 @@ class ListsController < ApplicationController
     # １.&2. データを受け取り新規登録するためのインスタンス作成
     @list = List.new(list_params)
     # 3. データをデータベースに保存するためのsaveメソッド実行
-    @list.save
+    if @list.save
     # 4. トップ画面へリダイレクト
-    redirect_to top_path, notice: "投稿が完了しました。"
+     redirect_to list_path(@list)
+    else
+     render :new
+    end
 end
 
 
